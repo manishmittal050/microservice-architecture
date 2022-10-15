@@ -1,0 +1,57 @@
+server:
+  port: 8443
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      
+      
+springdoc:
+  swagger-ui:
+    version: "v0.1"
+    use-root-path: true
+      
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: openapi
+          uri: lb://AUTH-SERVICE
+          predicates:
+          - Path=/v3/api-docs/auth
+          filters:
+          - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+        - id: openapi2
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+          - Path=/v3/api-docs/product
+          filters:
+          - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+          - Path=/auth/**
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+          - Path=/product/**
+          filters:
+          - name: AuthGatewayFilter
+            
+      discovery:
+        locator:
+          enabled: true
+      

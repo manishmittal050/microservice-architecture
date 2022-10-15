@@ -1,7 +1,6 @@
 package com.mmittal.authservice.controllers;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class AuthController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest authRequest){
         System.out.println("inside login"+ authRequest.getEmail());
         try {
@@ -48,7 +47,7 @@ public class AuthController {
         }
     }
     
-    @PostMapping("/auth/validate")
+    @PostMapping("/validate")
     public ResponseEntity<String> validate(@RequestHeader("Authorization") String authorization) {
     	return new ResponseEntity<String>("Access Granted.", HttpStatus.OK);
     }

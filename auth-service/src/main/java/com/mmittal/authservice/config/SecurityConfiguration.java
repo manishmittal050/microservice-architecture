@@ -45,7 +45,7 @@ public class SecurityConfiguration{
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.authorizeRequests()
-		.antMatchers("/auth/login").permitAll()
+		.antMatchers("/login/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
 		.anyRequest().authenticated();
 
 		http.exceptionHandling()
